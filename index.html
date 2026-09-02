@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🦅 OMAR ELNESR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Tajawal:wght@400;500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky-1:#eaf7ff;
+  --sky-2:#d6effc;
+  --white:#ffffff;
+  --navy:#1b2a4a;
+  --muted:#6b7a99;
+  --gold:#ffb703;
+  --gold-dark:#e08e00;
+  --blue:#219ebc;
+  --blue-2:#4cc9f0;
+  --green:#5fb37a;
+  --red:#e5533d;
+  --card-radius:22px;
+  --hand:'Fredoka',sans-serif;
+  --sans:'Tajawal',sans-serif;
+  --mono:'Fira Code',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;font-family:var(--sans);color:var(--navy);
+  background:
+    radial-gradient(600px 300px at 90% 0%, rgba(255,183,3,.16), transparent 60%),
+    radial-gradient(700px 380px at 0% 100%, rgba(76,201,240,.18), transparent 60%),
+    linear-gradient(180deg, var(--sky-1), var(--sky-2));
+  min-height:100vh;line-height:1.85;
+}
+/* floating clouds */
+.cloud{position:fixed;opacity:.6;pointer-events:none;z-index:0;}
+.cloud svg{display:block;}
+.c1{top:6%;left:5%;width:90px;animation:drift 22s ease-in-out infinite;}
+.c2{top:18%;right:8%;width:60px;animation:drift 26s ease-in-out infinite reverse;}
+.c3{bottom:10%;left:12%;width:70px;animation:drift 20s ease-in-out infinite;}
+@keyframes drift{0%,100%{transform:translateX(0);}50%{transform:translateX(18px);}}
+
+.app{display:flex;min-height:100vh;position:relative;z-index:1;}
+
+/* ===== Sidebar ===== */
+.side{
+  width:280px;flex:0 0 280px;
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(8px);
+  border-left:2px solid rgba(255,183,3,.25);
+  padding:24px 18px 40px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.side::-webkit-scrollbar{width:6px;}
+.side::-webkit-scrollbar-thumb{background:rgba(27,42,74,.2);border-radius:4px;}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 6px 16px;border-bottom:2px dashed rgba(27,42,74,.15);margin-bottom:14px;}
+.brand .emoji{font-size:34px;}
+.brand b{font-family:var(--hand);font-size:19px;display:block;color:var(--navy);}
+.brand span{font-family:var(--mono);font-size:11px;color:var(--muted);}
+
+.progress-wrap{margin:6px 4px 18px;}
+.progress-label{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between;}
+.progress-track{height:12px;background:#e4ecf3;border-radius:20px;overflow:hidden;border:1px solid rgba(27,42,74,.1);}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--blue-2));border-radius:20px;transition:width .3s;}
+
+.topic{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;margin-bottom:5px;border-radius:12px;cursor:pointer;
+  text-decoration:none;color:var(--navy);font-size:13.8px;
+  border:1px solid transparent;transition:background .15s,border-color .15s;
+}
+.topic:hover{background:rgba(255,183,3,.12);}
+.topic.active{background:rgba(76,201,240,.16);border-color:rgba(76,201,240,.4);}
+.check{
+  width:20px;height:20px;border-radius:7px;border:2px solid var(--muted);
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:12px;
+  background:var(--white);transition:all .15s;
+}
+.check.done{background:var(--green);border-color:var(--green);color:#fff;}
+.topic.studied span.label{text-decoration:line-through;color:var(--muted);}
+
+.main{flex:1;min-width:0;}
+.topbar{display:none;position:sticky;top:0;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);padding:12px 18px;align-items:center;justify-content:space-between;border-bottom:2px solid rgba(255,183,3,.2);}
+.topbar .b{font-family:var(--hand);color:var(--navy);font-weight:600;}
+.menu-btn{background:var(--gold);border:none;color:#3a2400;border-radius:10px;padding:8px 14px;cursor:pointer;font-family:var(--sans);font-weight:700;font-size:13px;}
+
+.hero{padding:clamp(36px,6vw,64px) clamp(20px,5vw,48px) 30px;max-width:960px;}
+.hero .eyebrow{font-family:var(--mono);color:var(--gold-dark);font-size:13px;margin-bottom:10px;font-weight:600;}
+.hero h1{font-family:var(--hand);font-weight:700;font-size:clamp(26px,4vw,40px);margin:0 0 14px;color:var(--navy);}
+.hero h1 span{color:var(--blue);}
+.hero p{color:var(--muted);font-size:16px;max-width:620px;margin:0;}
+
+section.card{
+  margin:0 clamp(16px,5vw,48px) 28px;max-width:960px;
+  background:var(--white);border-radius:var(--card-radius);
+  box-shadow:0 10px 30px rgba(27,42,74,.08);
+  overflow:hidden;scroll-margin-top:20px;
+  border:1px solid rgba(27,42,74,.05);
+}
+.card-head{
+  padding:18px clamp(16px,3vw,26px);display:flex;align-items:center;gap:14px;
+  background:linear-gradient(90deg, rgba(255,183,3,.10), transparent);
+}
+.card-head .num{
+  font-family:var(--hand);font-weight:700;font-size:17px;color:#fff;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+}
+.card-head h2{margin:0;font-family:var(--hand);font-weight:600;font-size:clamp(18px,2vw,21px);color:var(--navy);}
+.card-body{padding:clamp(16px,3vw,26px);}
+.card-body p, .card-body li{color:#33415c;font-size:15px;}
+.card-body ul{padding-inline-start:22px;margin:10px 0;}
+.card-body li{margin-bottom:6px;}
+
+.two-col{display:flex;gap:14px;flex-wrap:wrap;}
+.chip{flex:1 1 230px;border:1.5px solid rgba(27,42,74,.08);border-radius:16px;padding:15px 17px;background:#f7fbff;}
+.chip h3{margin:0 0 6px;font-family:var(--hand);font-size:15.5px;color:var(--blue);}
+.chip p{margin:0;font-size:13.5px;color:var(--muted)!important;}
+
+pre{background:#0f1b2d;border-radius:14px;padding:14px 16px;overflow-x:auto;direction:ltr;text-align:left;font-family:var(--mono);font-size:12.8px;color:#d8f0ff;margin:12px 0;}
+pre .k{color:#ffb703;}
+pre .s{color:#8fe08a;}
+pre .c{color:#7f93b3;}
+pre .f{color:#7fd6ff;}
+code.inline{background:#eef4fb;border:1px solid rgba(27,42,74,.1);padding:1px 7px;border-radius:6px;font-family:var(--mono);font-size:13px;color:#1b2a4a;direction:ltr;display:inline-block;unicode-bidi:embed;}
+
+table.attrs{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+table.attrs th,table.attrs td{border:1px solid rgba(27,42,74,.08);padding:9px 11px;text-align:right;vertical-align:top;}
+table.attrs th{background:#f7fbff;color:var(--blue);font-family:var(--mono);font-size:12px;}
+
+/* study section label */
+.study-label{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;
+  color:var(--gold-dark);background:rgba(255,183,3,.14);border-radius:20px;padding:4px 12px;margin:16px 0 10px;
+}
+
+/* ===== Flashcards ===== */
+.flash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:6px;}
+.flashcard{
+  perspective:900px;height:110px;cursor:pointer;
+}
+.flashcard-inner{
+  position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;
+}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;
+  font-family:var(--hand);font-size:14px;
+}
+.flash-front{background:linear-gradient(135deg,var(--blue-2),var(--blue));color:#fff;}
+.flash-back{background:#fff;border:2px solid var(--gold);transform:rotateY(180deg);color:var(--navy);font-family:var(--sans);font-size:12.5px;font-weight:500;}
+
+/* ===== Quiz ===== */
+.quiz{border:1.5px dashed rgba(27,42,74,.18);border-radius:16px;padding:16px;background:#fbfdff;margin-top:14px;}
+.quiz p.q{font-weight:700;margin:0 0 10px;font-size:14.5px;}
+.quiz label{display:flex;align-items:center;gap:8px;padding:7px 4px;font-size:14px;cursor:pointer;border-radius:8px;}
+.quiz label:hover{background:rgba(76,201,240,.08);}
+.quiz-btn{
+  margin-top:10px;background:var(--blue);color:#fff;border:none;border-radius:10px;
+  padding:8px 18px;font-family:var(--sans);font-weight:700;cursor:pointer;font-size:13.5px;
+}
+.quiz-btn:hover{background:#1a86a0;}
+.quiz-result{margin-top:10px;font-weight:700;font-size:13.5px;min-height:20px;}
+.quiz-result.ok{color:var(--green);}
+.quiz-result.bad{color:var(--red);}
+
+/* fill blank */
+.fillblank{margin-top:14px;}
+.fillblank input{
+  font-family:var(--mono);font-size:13px;border:1.5px solid rgba(27,42,74,.2);
+  border-radius:8px;padding:7px 10px;width:140px;direction:ltr;
+}
+.fillblank .fb-btn{
+  background:var(--gold);border:none;color:#3a2400;border-radius:8px;padding:7px 14px;
+  font-family:var(--sans);font-weight:700;cursor:pointer;font-size:13px;margin-inline-start:8px;
+}
+.fb-result{margin-top:8px;font-weight:700;font-size:13.5px;}
+
+footer{text-align:center;color:var(--muted);font-size:12.5px;font-family:var(--mono);padding:40px 20px 60px;}
+
+@media (max-width:900px){
+  .side{position:fixed;inset-inline-end:0;top:0;height:100vh;transform:translateX(105%);transition:transform .22s ease;z-index:30;box-shadow:-14px 0 40px rgba(0,0,0,.2);width:82%;max-width:310px;flex-basis:auto;}
+  .side.open{transform:translateX(0);}
+  .topbar{display:flex;}
+}
+@media (max-width:560px){
+  table.attrs, table.attrs tbody, table.attrs tr, table.attrs td, table.attrs th{display:block;width:100%;}
+  table.attrs tr{margin-bottom:8px;border:1px solid rgba(27,42,74,.1);border-radius:10px;overflow:hidden;}
+  table.attrs th{border:none;}
+  table.attrs td{border:none;border-top:1px solid rgba(27,42,74,.08);}
+}
+</style>
+</head>
+<body>
+
+<div class="cloud c1"><svg viewBox="0 0 100 60" fill="white"><ellipse cx="30" cy="35" rx="28" ry="18"/><ellipse cx="60" cy="28" rx="22" ry="16"/><ellipse cx="75" cy="38" rx="18" ry="14"/></svg></div>
+<div class="cloud c2"><svg viewBox="0 0 100 60" fill="white"><ellipse cx="30" cy="35" rx="28" ry="18"/><ellipse cx="60" cy="28" rx="22" ry="16"/></svg></div>
+<div class="cloud c3"><svg viewBox="0 0 100 60" fill="white"><ellipse cx="30" cy="35" rx="24" ry="16"/><ellipse cx="55" cy="30" rx="20" ry="14"/></svg></div>
+
+<div class="app">
+
+  <div class="topbar">
+    <div class="b">🦅 OMAR ELNESR</div>
+    <button class="menu-btn" id="menuBtn">☰ خطة المذاكرة</button>
+  </div>
+
+  <aside class="side" id="side">
+    <div class="brand">
+      <span class="emoji">🦅</span>
+      <div><b>OMAR ELNESR</b><span>مذاكرة بايثون 🐍</span></div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>تقدّم المذاكرة</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <a class="topic" data-topic="1" href="#s1"><span class="check" data-check="1"></span><span class="label">1. المجموعات (List &amp; Dictionary)</span></a>
+    <a class="topic" data-topic="2" href="#s2"><span class="check" data-check="2"></span><span class="label">2. التكرار (Loops)</span></a>
+    <a class="topic" data-topic="3" href="#s3"><span class="check" data-check="3"></span><span class="label">3. الكود الخارجي (Module/Library)</span></a>
+    <a class="topic" data-topic="4" href="#s4"><span class="check" data-check="4"></span><span class="label">4. العمل مع النصوص</span></a>
+    <a class="topic" data-topic="5" href="#s5"><span class="check" data-check="5"></span><span class="label">5. تخطيط البرنامج</span></a>
+    <a class="topic" data-topic="6" href="#s6"><span class="check" data-check="6"></span><span class="label">6. تصحيح الأخطاء</span></a>
+    <a class="topic" data-topic="7" href="#s7"><span class="check" data-check="7"></span><span class="label">7. البرمجة الكائنية</span></a>
+    <a class="topic" data-topic="8" href="#s8"><span class="check" data-check="8"></span><span class="label">8. مواضيع متقدمة</span></a>
+  </aside>
+
+  <main class="main">
+    <div class="hero">
+      <div class="eyebrow">🦅 خطة مذاكرة تفاعلية</div>
+      <h1>أساسيات بايثون<br>مذاكرة <span>بالممارسة</span>، مش بس قراءة</h1>
+      <p>اقرأ، اقلب البطاقات، جاوب على الأسئلة، وكمّل الكود الناقص — واعلّم كل موضوع بعد ما تخلصه من القائمة الجانبية عشان تتابع تقدّمك.</p>
+    </div>
+
+    <!-- 1 -->
+    <section class="card" id="s1">
+      <div class="card-head"><span class="num">1</span><h2>المجموعات (Collection)</h2></div>
+      <div class="card-body">
+        <p>هي تخزين عناصر متعددة معًا وتخزينها باسم واحد يسمى متغيّر.</p>
+        <div class="two-col">
+          <div class="chip">
+            <h3>List (القائمة)</h3>
+            <p>مجموعة عناصر مخزّنة في متغير واحد، ترتيبها يهم، ولها Index يبدأ من 0.</p>
+          </div>
+          <div class="chip">
+            <h3>Dictionary (القاموس)</h3>
+            <p>يُستخدم لتخزين قيمة (Value) معينة في مفتاح (Key) معين — بصيغة key : value.</p>
+          </div>
+        </div>
+        <pre><span class="f">colorList</span> = [<span class="s">"blue"</span>, <span class="s">"red"</span>, <span class="s">"green"</span>, <span class="s">"black"</span>]
+<span class="k">print</span>(colorList[0]) <span class="c"># blue</span>
+
+<span class="f">phoneNumbers</span> = {
+  <span class="s">"ali"</span> : <span class="s">"01157082417"</span>,
+  <span class="s">"ahmed"</span> : <span class="s">"01157082333"</span>,
+}
+<span class="k">print</span>(phoneNumbers[<span class="s">"ali"</span>]) <span class="c"># 01157082417</span></pre>
+
+        <div class="study-label">🃏 بطاقات مراجعة سريعة — اضغط للقلب</div>
+        <div class="flash-grid">
+          <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+              <div class="flash-face flash-front">List</div>
+              <div class="flash-face flash-back">مجموعة عناصر مرتبة، الوصول لها بالـ Index بداية من 0</div>
+            </div>
+          </div>
+          <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+              <div class="flash-face flash-front">Dictionary</div>
+              <div class="flash-face flash-back">تخزين Value مرتبط بـ Key، الوصول لها بالمفتاح مش بالترتيب</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz" data-quiz="1">
+          <p class="q">❓ عايز تطبع "green" من colorList اللي فوق، هتكتب إيه؟</p>
+          <label><input type="radio" name="q1" data-correct="false"> colorList[1]</label>
+          <label><input type="radio" name="q1" data-correct="true"> colorList[2]</label>
+          <label><input type="radio" name="q1" data-correct="false"> colorList[3]</label>
+          <label><input type="radio" name="q1" data-correct="false"> colorList["green"]</label>
+          <button class="quiz-btn" onclick="checkQuiz(1)">تحقق من إجابتي</button>
+          <div class="quiz-result" id="result1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="card" id="s2">
+      <div class="card-head"><span class="num">2</span><h2>التكرار (Iterations)</h2></div>
+      <div class="card-body">
+        <p><b>التكرار (Iteration):</b> تكرار نفس الإجراء عدة مرات حتى الوصول لنقطة نهاية محددة. <b>الحلقة (Loop):</b> رمز يتكرر من بداية العملية إلى نهايتها، ثم يبدأ من جديد.</p>
+        <ul>
+          <li>لعمل Loop لازم تعرف: المعلومات التي تعمل عليها، ماذا يحدث في كل تكرار، ومتى تتوقف.</li>
+          <li>لو مفيش شرط توقف واضح، هتقع في <code class="inline">Infinite loop</code>.</li>
+        </ul>
+        <table class="attrs">
+          <tr><th>النوع</th><th>الاستخدام</th></tr>
+          <tr><td><code>for loop</code></td><td>لتكرار عملية عدد مرات معيّن، غالبًا للمرور على عناصر Collection.</td></tr>
+          <tr><td><code>while loop</code></td><td>يستمر التنفيذ طالما الشرط صحيح، ويتوقف فور أن يصبح الشرط خطأ.</td></tr>
+        </table>
+        <pre><span class="k">for</span> color <span class="k">in</span> colorList:
+  <span class="k">print</span>(color)
+
+counter = 5
+<span class="k">while</span> counter != 100:
+  <span class="k">print</span>(counter)
+  counter += ____   <span class="c"># كمّل الكود!</span></pre>
+
+        <div class="fillblank">
+          <label>الرقم اللي هيتضاف كل مرة عشان يطبع 5,10,15...حتى 100:
+            <input type="text" id="fb1" placeholder="؟">
+            <button class="fb-btn" onclick="checkBlank('fb1','5','fbr1')">تحقق</button>
+          </label>
+          <div class="fb-result" id="fbr1"></div>
+        </div>
+
+        <div class="quiz" data-quiz="2">
+          <p class="q">❓ لو الشرط في while loop بقى خطأ فجأة، هيحصل إيه؟</p>
+          <label><input type="radio" name="q2" data-correct="false"> هتستمر الحلقة للأبد</label>
+          <label><input type="radio" name="q2" data-correct="true"> هتتوقف الحلقة فورًا</label>
+          <label><input type="radio" name="q2" data-correct="false"> هيحصل خطأ في الكود</label>
+          <button class="quiz-btn" onclick="checkQuiz(2)">تحقق من إجابتي</button>
+          <div class="quiz-result" id="result2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="card" id="s3">
+      <div class="card-head"><span class="num">3</span><h2>استخدام كود خارجي</h2></div>
+      <div class="card-body">
+        <div class="two-col">
+          <div class="chip"><h3>Module</h3><p>ملف بايثون يحتوي على تعليمات برمجية (متغيرات أو دوال) — ممكن تكتبه أو تستخدم واحد جاهز.</p></div>
+          <div class="chip"><h3>Library</h3><p>استخدام وحدات متعددة معًا بحيث تُوزَّع وتُستخدم في مجموعة. مثل: PyTorch, TensorFlow, Pandas.</p></div>
+          <div class="chip"><h3>Framework</h3><p>مجموعة تعليمات برمجية لا تُستخدم فقط، بل بطريقة معينة محددة. مثل: Django, Dash, CherryPy.</p></div>
+        </div>
+        <pre><span class="k">import</span> math
+<span class="k">print</span>(math.floor(10.6)) <span class="c"># 10 — تقريب لأصغر عدد صحيح</span>
+<span class="k">print</span>(math.ceil(10.6))  <span class="c"># 11 — تقريب لأكبر عدد صحيح</span>
+
+<span class="c"># استيراد دالة من ملف داخل مجلد</span>
+<span class="k">from</span> folder_name <span class="k">import</span> file_name</pre>
+
+        <div class="quiz" data-quiz="3">
+          <p class="q">❓ عايز تقرّب الرقم 10.2 لأقرب عدد صحيح أكبر، هتستخدم إيه؟</p>
+          <label><input type="radio" name="q3" data-correct="false"> math.floor()</label>
+          <label><input type="radio" name="q3" data-correct="true"> math.ceil()</label>
+          <label><input type="radio" name="q3" data-correct="false"> math.round()</label>
+          <button class="quiz-btn" onclick="checkQuiz(3)">تحقق من إجابتي</button>
+          <div class="quiz-result" id="result3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="card" id="s4">
+      <div class="card-head"><span class="num">4</span><h2>العمل مع النصوص (Strings)</h2></div>
+      <div class="card-body">
+        <p><b>جمع السلاسل (Concatenation):</b> دمج أكثر من String في String واحدة باستخدام <code class="inline">+</code>.</p>
+        <table class="attrs">
+          <tr><th>الدالة</th><th>الوظيفة</th></tr>
+          <tr><td><code>.capitalize()</code></td><td>جعل أول حرف Capital.</td></tr>
+          <tr><td><code>.lower()</code></td><td>جعل النص كله صغير.</td></tr>
+          <tr><td><code>.find()</code></td><td>معرفة موقع كلمة معينة داخل الـ String.</td></tr>
+          <tr><td><code>.replace()</code></td><td>استبدال كلمة بكلمة أخرى.</td></tr>
+          <tr><td><code>.split()</code></td><td>تقسيم الـ String إلى أجزاء في List.</td></tr>
+        </table>
+        <pre>name = <span class="s">"Ali"</span>
+result = <span class="s">"Welcome "</span> + name
+<span class="k">print</span>(result) <span class="c"># Welcome Ali</span></pre>
+
+        <div class="fillblank">
+          <label>الدالة اللي تخلي كل حروف النص صغيرة:
+            <input type="text" id="fb2" placeholder="?()">
+            <button class="fb-btn" onclick="checkBlank('fb2','lower()','fbr2')">تحقق</button>
+          </label>
+          <div class="fb-result" id="fbr2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="card" id="s5">
+      <div class="card-head"><span class="num">5</span><h2>تخطيط البرنامج</h2></div>
+      <div class="card-body">
+        <div class="two-col">
+          <div class="chip"><h3>Style Guide</h3><p>مرجع لطرق كتابة الكود بشكل أفضل ومنظّم وبأداء عالي. أشهرها: PEP 8 للبايثون، وAirbnb للجافاسكريبت.</p></div>
+          <div class="chip"><h3>Pseudocode</h3><p>وصف بسيط لما تحاول القيام به، قبل كتابة الكود الفعلي — يساعد على تحديد إطار وحل المشكلة دون تشتت.</p></div>
+        </div>
+        <div class="study-label">🃏 بطاقات مراجعة</div>
+        <div class="flash-grid">
+          <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+              <div class="flash-face flash-front">PEP 8</div>
+              <div class="flash-face flash-back">أشهر Style Guide لكتابة كود بايثون منظم</div>
+            </div>
+          </div>
+          <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+              <div class="flash-face flash-front">Pseudocode</div>
+              <div class="flash-face flash-back">خطوة قبل الكود — وصف الحل بلغة بسيطة</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="card" id="s6">
+      <div class="card-head"><span class="num">6</span><h2>تصحيح الأخطاء (Debugging)</h2></div>
+      <div class="card-body">
+        <p><b>Debugging:</b> عملية تحديد وإصلاح الأخطاء في البرنامج. <b>Test Cases:</b> أوامر مصممة لاختبار سيناريو معين والتأكد أن البرنامج يعمل حسب المطلوب.</p>
+        <table class="attrs">
+          <tr><th>نوع الخطأ</th><th>متى يحدث</th></tr>
+          <tr><td>Syntax Error</td><td>عند خرق قواعد اللغة — مثل <code>print(Hello, world)</code> بدون علامات تنصيص.</td></tr>
+          <tr><td>Runtime Error</td><td>عندما لا يستطيع الكمبيوتر تنفيذ الكود — مثل القسمة على صفر.</td></tr>
+          <tr><td>Semantic Error</td><td>عندما تكون المخرجات (Output) غير متوقعة رغم عدم وجود خطأ في اللغة نفسها.</td></tr>
+        </table>
+
+        <div class="quiz" data-quiz="6">
+          <p class="q">❓ كتبت <code class="inline">10 * (2/0)</code> وحصل Error، ده نوعه إيه؟</p>
+          <label><input type="radio" name="q6" data-correct="false"> Syntax Error</label>
+          <label><input type="radio" name="q6" data-correct="true"> Runtime Error</label>
+          <label><input type="radio" name="q6" data-correct="false"> Semantic Error</label>
+          <button class="quiz-btn" onclick="checkQuiz(6)">تحقق من إجابتي</button>
+          <div class="quiz-result" id="result6"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="card" id="s7">
+      <div class="card-head"><span class="num">7</span><h2>البرمجة الكائنية (OOP)</h2></div>
+      <div class="card-body">
+        <p>الكود المنظّم بالبرمجة الكائنية تكون أجزاؤه مقسّمة لأجزاء صغيرة تسمى <b>كائنات (Objects)</b>، تتواصل مع بعضها ليعمل البرنامج كوحدة متكاملة. كل Object له:</p>
+        <div class="two-col">
+          <div class="chip"><h3>Attributes (الخصائص)</h3><p>البيانات التي يحتويها الكائن.</p></div>
+          <div class="chip"><h3>Behavior (السلوك)</h3><p>ما يستطيع الكائن فعله من أفعال ووظائف.</p></div>
+        </div>
+
+        <div class="quiz" data-quiz="7">
+          <p class="q">❓ "لون العين" لكائن إنسان — ده Attribute ولا Behavior؟</p>
+          <label><input type="radio" name="q7" data-correct="true"> Attribute (خاصية)</label>
+          <label><input type="radio" name="q7" data-correct="false"> Behavior (سلوك)</label>
+          <button class="quiz-btn" onclick="checkQuiz(7)">تحقق من إجابتي</button>
+          <div class="quiz-result" id="result7"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="card" id="s8">
+      <div class="card-head"><span class="num">8</span><h2>مواضيع متقدمة</h2></div>
+      <div class="card-body">
+        <div class="two-col">
+          <div class="chip"><h3>Drive</h3><p>يحتوي على البيانات والبرامج، ويظل موجودًا بعد إطفاء الكمبيوتر.</p></div>
+          <div class="chip"><h3>Memory</h3><p>يتم فيها تشغيل الكود وتخزين النواتج والبيانات المؤقتة — تُمسح عند إعادة التشغيل.</p></div>
+          <div class="chip"><h3>Memory Leak</h3><p>يحدث عند كتابة كود إدارة الذاكرة بشكل خاطئ، فتزداد المساحة المستخدمة بشكل غير مبرر.</p></div>
+          <div class="chip"><h3>Garbage Collection</h3><p>عملية إدارة ذاكرة آلية تتعقب العناصر غير المطلوبة وتحذفها.</p></div>
+          <div class="chip"><h3>Algorithm</h3><p>خطة مكوّنة من خطوات منطقية لحل مشكلة أو تنفيذ فكرة معينة.</p></div>
+        </div>
+
+        <div class="study-label">🃏 بطاقات مراجعة أخيرة</div>
+        <div class="flash-grid">
+          <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+              <div class="flash-face flash-front">Garbage Collection</div>
+              <div class="flash-face flash-back">حذف تلقائي للعناصر غير المستخدمة في الذاكرة</div>
+            </div>
+          </div>
+          <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+              <div class="flash-face flash-front">Algorithm</div>
+              <div class="flash-face flash-back">خطوات منطقية مرتبة لحل مشكلة معينة</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>🦅 OMAR ELNESR — ذاكر خطوة بخطوة، وعلّم كل موضوع لما تخلّصه</footer>
+  </main>
+</div>
+
+<script>
+/* mobile menu */
+const menuBtn = document.getElementById('menuBtn');
+const side = document.getElementById('side');
+menuBtn && menuBtn.addEventListener('click', ()=> side.classList.toggle('open'));
+document.querySelectorAll('.topic').forEach(l=>l.addEventListener('click', (e)=>{
+  if(e.target.closest('.check')) return; /* handled separately */
+  side.classList.remove('open');
+}));
+
+/* active section highlight */
+const topics = document.querySelectorAll('.topic');
+const sections = document.querySelectorAll('section.card');
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    const link = document.querySelector(`.topic[href="#${e.target.id}"]`);
+    if(!link) return;
+    if(e.isIntersecting){ topics.forEach(l=>l.classList.remove('active')); link.classList.add('active'); }
+  });
+},{rootMargin:'-25% 0px -60% 0px'});
+sections.forEach(s=>obs.observe(s));
+
+/* progress tracking (session only) */
+const studied = new Set();
+const totalTopics = document.querySelectorAll('.check').length;
+function updateProgress(){
+  const pct = Math.round((studied.size/totalTopics)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressPct').textContent = pct+'%';
+}
+document.querySelectorAll('.check').forEach(chk=>{
+  chk.addEventListener('click', (e)=>{
+    e.preventDefault(); e.stopPropagation();
+    const id = chk.dataset.check;
+    const topicEl = chk.closest('.topic');
+    if(studied.has(id)){ studied.delete(id); chk.classList.remove('done'); chk.textContent=''; topicEl.classList.remove('studied'); }
+    else { studied.add(id); chk.classList.add('done'); chk.textContent='✓'; topicEl.classList.add('studied'); }
+    updateProgress();
+  });
+});
+
+/* quiz checker */
+function checkQuiz(id){
+  const quiz = document.querySelector(`.quiz[data-quiz="${id}"]`);
+  const checked = quiz.querySelector('input:checked');
+  const result = document.getElementById('result'+id);
+  if(!checked){ result.textContent='اختر إجابة الأول 🙂'; result.className='quiz-result'; return; }
+  if(checked.dataset.correct==='true'){ result.textContent='إجابة صح 🎉'; result.className='quiz-result ok'; }
+  else { result.textContent='مش قصادها، حاول تاني 💪'; result.className='quiz-result bad'; }
+}
+
+/* fill in the blank checker */
+function checkBlank(inputId, answer, resultId){
+  const val = document.getElementById(inputId).value.trim().toLowerCase().replace('()','');
+  const result = document.getElementById(resultId);
+  const clean = answer.toLowerCase().replace('()','');
+  if(val === clean){ result.textContent='تمام كده ✅'; result.style.color='#5fb37a'; }
+  else { result.textContent='مش هي، جرب تاني 🔁'; result.style.color='#e5533d'; }
+}
+</script>
+</body>
+</html>
